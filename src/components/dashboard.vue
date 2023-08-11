@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { type MenuSchema, useRouter, useNavbar, useStore } from 'waltz-ui'
-import { inject, reactive, toRefs, computed, onMounted } from 'vue'
+import { inject, ref, reactive, toRefs, computed, onMounted } from 'vue'
 import { daysAgo } from '@sonata-api/common'
 import { WInfo, WIcon, WPicture } from '@waltz-ui/ui'
 
