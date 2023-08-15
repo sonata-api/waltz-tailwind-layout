@@ -95,7 +95,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
                 ${index === expandedIndex && 'tw-bg-gray-100'}
               `"
 
-              :name="item.meta.icon"
+              :icon="item.meta.icon"
               @click="expandedIndex = index; router.push({ name: expandedMenu.children[0].name })"
             ></w-icon>
           </w-info>
@@ -143,7 +143,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
             v-clickable
             v-for="(subitem, index) in expandedMenu.children"
             :key="`subitem-${index}`"
-            :name="subitem.meta.icon"
+            :icon="subitem.meta.icon"
 
             :class="`
               tw-font-[300]
@@ -179,7 +179,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-z-20
       ">
         <w-icon
-          :name="viewIcon"
+          :icon="viewIcon"
           class="
             tw-text-xl
           "
