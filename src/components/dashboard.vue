@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { type MenuSchema, useRouter, useNavbar, useStore } from 'waltz-ui'
+import { type MenuSchema, useRouter, useNavbar } from 'waltz-ui'
 import { inject, ref, reactive, toRefs, computed, onMounted } from 'vue'
-import { daysAgo } from '@sonata-api/common'
 import { WInfo, WIcon, WPicture } from '@waltz-ui/ui'
 
 const menuSchema = inject<MenuSchema>('menuSchema')
@@ -18,16 +17,13 @@ const {
 } = toRefs(navbarRefs)
 
 const router = await useRouter()
+
 const push = (...args: Parameters<typeof router.push>) => {
   window.scrollTo(0, 0)
   router.push(...args)
 }
 
 onMounted(async () => {
-  useStore('user').functions.ping(null, {
-    skipLoading: true
-  })
-
   const navbar = await useNavbar({ schema: menuSchema })
   Object.assign(navbarRefs, navbar)
 })
