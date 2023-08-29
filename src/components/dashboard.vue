@@ -39,6 +39,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
     tw-flex
   ">
     <nav class="
+      no-print
       tw-sticky
       tw-inset-0
       tw-h-screen
