@@ -172,8 +172,10 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-items-center
         tw-gap-6
         tw-bg-white
-        tw-p-8
+        tw-px-8
         tw-z-20
+        tw-h-[6rem]
+        view-top
       ">
         <w-icon
           :icon="viewIcon"
@@ -199,7 +201,8 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-flex
         tw-flex-col
         tw-gap-[2rem]
-        tw-p-8
+        tw-px-8
+        tw-pb-8
       ">
         <router-view></router-view>
       </div>
@@ -207,3 +210,11 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
   </div>
 
 </template>
+
+<style scoped lang="scss">
+@media print {
+  .view-top {
+    display: relative !important;
+  }
+}
+</style>
