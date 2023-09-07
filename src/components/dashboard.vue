@@ -37,6 +37,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 <template>
   <div class="
     tw-flex
+    w-surface
   ">
     <nav class="
       no-print
@@ -48,6 +49,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
       tw-border-r
       tw-bg-gray-50
       lg:tw-w-[20rem]
+      w-surface-alt
     ">
       <div class="
         tw-flex
@@ -171,10 +173,10 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-flex
         tw-items-center
         tw-gap-6
-        tw-bg-white
         tw-px-8
         tw-z-20
         tw-h-[6rem]
+        w-surface
         view-top
       ">
         <w-icon
