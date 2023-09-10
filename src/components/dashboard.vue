@@ -17,10 +17,15 @@ const {
 } = toRefs(navbarRefs)
 
 const router = await useRouter()
+const menuVisible = ref(false)
 
-const push = (...args: Parameters<typeof router.push>) => {
+const push = (options: { close?: boolean } | null, ...args: Parameters<typeof router.push>) => {
   window.scrollTo(0, 0)
   router.push(...args)
+
+  if( options?.close ) {
+    menuVisible.value = false
+  }
 }
 
 onMounted(async () => {
@@ -36,21 +41,26 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 
 <template>
   <div class="
-    tw-flex
+    lg:tw-flex
     w-surface
   ">
-    <nav class="
+    <nav :class="`
       no-print
       tw-sticky
       tw-inset-0
       tw-h-screen
-      tw-flex
       tw-overflow-hidden
       tw-border-r
       tw-bg-gray-50
       lg:tw-w-[20rem]
+      tw-z-50
       w-surface-alt
-    ">
+      ${
+        menuVisible
+          ? 'tw-flex'
+          : 'tw-hidden lg:tw-flex'
+      }
+    `">
       <div class="
         tw-flex
         tw-flex-col
@@ -66,7 +76,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
             tw-object-contain
             tw-mb-6
           "
-          @click="push('/dashboard')"
+          @click="push({ close: true }, '/dashboard')"
         />
         <div class="
           tw-flex
@@ -90,12 +100,12 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
                 tw-border
                 tw-rounded-xl
                 tw-justify-center
-                hover:tw-bg-gray-200
-                ${index === expandedIndex && 'tw-bg-gray-100'}
+                on-hover
+                ${index === expandedIndex && 'active'}
               `"
 
               :icon="item.meta.icon"
-              @click="expandedIndex = index; router.push({ name: expandedMenu.children[0].name })"
+              @click="expandedIndex = index; push(null, { name: expandedMenu.children[0].name })"
             ></w-icon>
           </w-info>
 
@@ -112,7 +122,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
             tw-h-16
           "
 
-          @click="$router.push('/dashboard/user/profile')"
+          @click="push({ close: true }, '/dashboard/user/profile')"
         ></w-picture>
       </div>
 
@@ -126,11 +136,24 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         "
       >
         <div class="
-          tw-p-4
-          tw-font-bold
-          tw-text-lg
+          tw-flex
+          tw-items-center
+          tw-justify-between
         ">
-          {{ expandedMenu.meta.title }}
+          <div class="
+            tw-p-4
+            tw-font-bold
+            tw-text-lg
+          ">
+            {{ expandedMenu.meta.title }}
+          </div>
+
+          <div class="lg:tw-hidden">
+            <w-icon
+              icon="multiply"
+              @click="menuVisible = false"
+            ></w-icon>
+          </div>
         </div>
 
         <div class="
@@ -149,11 +172,11 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
               tw-text-[10pt]
               tw-rounded-xl
               tw-p-4
-              hover:tw-bg-gray-200
-              ${isCurrent(subitem) && 'tw-bg-gray-100'}
+              on-hover
+              ${isCurrent(subitem) && 'current'}
             `"
 
-            @click="$router.push({ name: subitem.name })"
+            @click="push({ close: true }, { name: subitem.name })"
           >
             {{ capitalize(subitem.meta.title) }}
           </w-icon>
@@ -175,7 +198,8 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-gap-6
         tw-px-8
         tw-z-20
-        tw-h-[6rem]
+        tw-h-[4.8rem]
+        lg:tw-h-[6rem]
         w-surface
         view-top
       ">
@@ -196,6 +220,16 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           tw-gap-6
         ">
           <slot v-if="$slots.super" name="super"></slot>
+
+          <div
+            class="lg:tw-hidden"
+            @click="menuVisible = true"
+          >
+            <w-icon
+              v-clickable
+              icon="bars"
+            ></w-icon>
+          </div>
         </div>
       </div>
 
@@ -203,8 +237,9 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-flex
         tw-flex-col
         tw-gap-[2rem]
-        tw-px-8
+        tw-px-4
         tw-pb-8
+        lg:tw-px-8
       ">
         <router-view></router-view>
       </div>
@@ -217,6 +252,12 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 @media print {
   .view-top {
     display: relative !important;
+  }
+}
+
+.on-hover:hover {
+  @include themed() {
+    background: t(background-color-hover);
   }
 }
 </style>

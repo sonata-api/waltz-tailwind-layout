@@ -17,6 +17,7 @@ provide('innerInputLabel', true)
       tw-flex-col
       tw-justify-center
       tw-items-center
+      w-surface
     ">
       <div class="
         tw-flex
