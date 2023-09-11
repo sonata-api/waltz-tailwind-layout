@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type MenuSchema, useRouter, useNavbar } from 'waltz-ui'
+import { type MenuSchema, useRouter, useNavbar, useBreakpoints } from 'waltz-ui'
 import { inject, ref, reactive, toRefs, computed, onMounted } from 'vue'
 import { WInfo, WIcon, WPicture } from '@waltz-ui/ui'
 
@@ -17,6 +17,7 @@ const {
 } = toRefs(navbarRefs)
 
 const router = await useRouter()
+const breakpoints = useBreakpoints()
 const menuVisible = ref(false)
 
 const push = (options: { close?: boolean } | null, ...args: Parameters<typeof router.push>) => {
@@ -105,7 +106,10 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
               `"
 
               :icon="item.meta.icon"
-              @click="expandedIndex = index; push(null, { name: expandedMenu.children[0].name })"
+              @click="
+                expandedIndex = index;
+                breakpoints.md && push(null, { name: expandedMenu.children[0].name })
+              "
             ></w-icon>
           </w-info>
 
