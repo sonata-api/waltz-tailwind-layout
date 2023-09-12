@@ -50,6 +50,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
       no-print
       tw-sticky
       tw-inset-0
+      tw-w-screen
       tw-h-screen
       tw-overflow-hidden
       tw-border-r
@@ -213,30 +214,34 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           @click="push('/dashboard')"
         />
 
-        <!-- <w-icon -->
-        <!--   :icon="viewIcon" -->
-        <!--   class="tw-ml-auto" -->
-        <!-- > -->
-        <!--   {{ capitalize(viewTitle) }} -->
-        <!-- </w-icon> -->
+        <w-icon
+          v-else
+          :icon="viewIcon"
+        >
+          {{ capitalize(viewTitle) }}
+        </w-icon>
 
         <div class="tw-ml-auto">
-          <w-picture
-            v-clickable
-            :file-id="currentUser.picture?._id || currentUser.picture"
-            class="
-              tw-rounded-full
-              tw-overflow-hidden
-              tw-border
-              tw-w-10
-              tw-h-10
-            "
-
-            @click="push('/dashboard/user/profile')"
-          ></w-picture>
+          <slot
+            v-if="$slots.super"
+            name="super"
+          ></slot>
         </div>
 
-        <slot v-if="$slots.super" name="super"></slot>
+        <w-picture
+          v-clickable
+          :file-id="currentUser.picture?._id || currentUser.picture"
+          class="
+            tw-rounded-full
+            tw-overflow-hidden
+            tw-border
+            tw-w-10
+            tw-h-10
+          "
+
+          @click="push('/dashboard/user/profile')"
+        ></w-picture>
+
 
         <!-- <slot -->
         <!--   v-if="$slots.super && breakpoints.md" -->
