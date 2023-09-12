@@ -23,7 +23,10 @@ provide('innerInputLabel', true)
         tw-flex
         tw-flex-col
         tw-gap-6
-        tw-w-[30rem]
+        tw-p-6
+        tw-w-screen
+        md:tw-p-0
+        md:tw-w-[30rem]
       ">
         <router-view></router-view>
       </div>

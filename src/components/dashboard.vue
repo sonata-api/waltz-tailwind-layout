@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type MenuSchema, useRouter, useNavbar, useBreakpoints } from 'waltz-ui'
+import { type MenuSchema, useStore, useRouter, useNavbar, useBreakpoints } from 'waltz-ui'
 import { inject, ref, reactive, toRefs, computed, onMounted } from 'vue'
 import { WInfo, WIcon, WPicture } from '@waltz-ui/ui'
 
@@ -17,15 +17,16 @@ const {
 } = toRefs(navbarRefs)
 
 const router = await useRouter()
+const metaStore = useStore('meta')
 const breakpoints = useBreakpoints()
-const menuVisible = ref(false)
 
-const push = (options: { close?: boolean } | null, ...args: Parameters<typeof router.push>) => {
+
+const push = (...args: Parameters<typeof router.push>) => {
   window.scrollTo(0, 0)
   router.push(...args)
 
-  if( options?.close ) {
-    menuVisible.value = false
+  if( !breakpoints.md ) {
+    metaStore.menu.visible = false
   }
 }
 
@@ -43,7 +44,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 <template>
   <div class="
     lg:tw-flex
-    w-surface
+    w-body
   ">
     <nav :class="`
       no-print
@@ -53,11 +54,10 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
       tw-overflow-hidden
       tw-border-r
       tw-bg-gray-50
+      tw-z-40
       lg:tw-w-[20rem]
-      tw-z-50
-      w-surface-alt
       ${
-        menuVisible
+        metaStore.menu.visible
           ? 'tw-flex'
           : 'tw-hidden lg:tw-flex'
       }
@@ -67,6 +67,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-flex-col
         tw-border-r
         tw-p-4
+        tw-bg-white
       ">
         <img
           v-clickable
@@ -77,14 +78,14 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
             tw-object-contain
             tw-mb-6
           "
-          @click="push({ close: true }, '/dashboard')"
+          @click="push('/dashboard')"
         />
+
         <div class="
           tw-flex
           tw-flex-col
           tw-items-center
           tw-gap-4
-          tw-mb-auto
         ">
           <w-info
             where="right"
@@ -108,26 +109,12 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
               :icon="item.meta.icon"
               @click="
                 expandedIndex = index;
-                breakpoints.md && push(null, { name: expandedMenu.children[0].name })
+                breakpoints.md && push({ name: expandedMenu.children[0].name })
               "
             ></w-icon>
           </w-info>
 
         </div>
-
-        <w-picture
-          v-clickable
-          :file-id="currentUser.picture?._id || currentUser.picture"
-          class="
-            tw-rounded-full
-            tw-overflow-hidden
-            tw-border-2
-            tw-w-16
-            tw-h-16
-          "
-
-          @click="push({ close: true }, '/dashboard/user/profile')"
-        ></w-picture>
       </div>
 
       <div
@@ -146,7 +133,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         ">
           <div class="
             tw-p-4
-            tw-font-bold
+            tw-font-[500]
             tw-text-lg
           ">
             {{ expandedMenu.meta.title }}
@@ -155,7 +142,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           <div class="lg:tw-hidden">
             <w-icon
               icon="multiply"
-              @click="menuVisible = false"
+              @click="metaStore.menu.visible = false"
             ></w-icon>
           </div>
         </div>
@@ -180,7 +167,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
               ${isCurrent(subitem) && 'current'}
             `"
 
-            @click="push({ close: true }, { name: subitem.name })"
+            @click="push({ name: subitem.name })"
           >
             {{ capitalize(subitem.meta.title) }}
           </w-icon>
@@ -199,52 +186,116 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-inset-0
         tw-flex
         tw-items-center
-        tw-gap-6
-        tw-px-8
         tw-z-20
-        tw-h-[4.8rem]
-        lg:tw-h-[6rem]
+        tw-px-8
+        tw-gap-6
+        tw-shadow
         w-surface
+        tw-h-[4rem]
         view-top
       ">
         <w-icon
-          :icon="viewIcon"
+          v-if="!breakpoints.md"
+          v-clickable
+          icon="bars"
+          @click="metaStore.menu.visible = true"
+        ></w-icon>
+
+        <img
+          v-if="!breakpoints.md"
+          v-clickable
+          :src="logoUrl"
           class="
-            tw-text-xl
+            tw-h-16
+            tw-w-20
+            tw-object-contain
           "
-        >
-          {{ capitalize(viewTitle) }}
-        </w-icon>
+          @click="push('/dashboard')"
+        />
 
-        <router-view name="topbar"></router-view>
-        <div class="
-          tw-flex
-          tw-items-center
-          tw-ml-auto
-          tw-gap-6
-        ">
-          <slot v-if="$slots.super" name="super"></slot>
+        <!-- <w-icon -->
+        <!--   :icon="viewIcon" -->
+        <!--   class="tw-ml-auto" -->
+        <!-- > -->
+        <!--   {{ capitalize(viewTitle) }} -->
+        <!-- </w-icon> -->
 
-          <div
-            class="lg:tw-hidden"
-            @click="menuVisible = true"
-          >
-            <w-icon
-              v-clickable
-              icon="bars"
-            ></w-icon>
-          </div>
+        <div class="tw-ml-auto">
+          <w-picture
+            v-clickable
+            :file-id="currentUser.picture?._id || currentUser.picture"
+            class="
+              tw-rounded-full
+              tw-overflow-hidden
+              tw-border
+              tw-w-10
+              tw-h-10
+            "
+
+            @click="push('/dashboard/user/profile')"
+          ></w-picture>
         </div>
+
+        <slot v-if="$slots.super" name="super"></slot>
+
+        <!-- <slot -->
+        <!--   v-if="$slots.super && breakpoints.md" -->
+        <!--   name="super" -->
+        <!-- ></slot> -->
+
+
       </div>
+
+      <!-- <div -->
+      <!--   v-if=" -->
+      <!--     breakpoints.md -->
+      <!--     || $slots.super -->
+      <!--     || hasTopbar -->
+      <!--   " -->
+
+      <!--   class=" -->
+      <!--     tw-inset-0 -->
+      <!--     tw-flex -->
+      <!--     tw-flex-col -->
+      <!--     tw-gap-[1rem] -->
+      <!--     tw-px-4 -->
+      <!--     tw-pt-6 -->
+      <!--     lg:tw-pt-0 -->
+      <!--     lg:tw-flex-row -->
+      <!--     lg:tw-items-center -->
+      <!--     lg:tw-gap-6 -->
+      <!--     lg:tw-px-8 -->
+      <!--     lg:tw-h-[5.4rem] -->
+      <!--     w-surface -->
+      <!--     view-top -->
+      <!--   " -->
+      <!-- > -->
+      <!--   <!-1- <w-icon -1-> -->
+      <!--   <!-1-   v-if="breakpoints.md" -1-> -->
+      <!--   <!-1-   :icon="viewIcon" -1-> -->
+      <!--   <!-1-   class="tw-text-lg" -1-> -->
+      <!--   <!-1- > -1-> -->
+      <!--   <!-1-   {{ capitalize(viewTitle) }} -1-> -->
+      <!--   <!-1- </w-icon> -1-> -->
+
+      <!--   <!-1- <router-view name="topbar"></router-view> -1-> -->
+
+      <!--   <!-1- <slot -1-> -->
+      <!--   <!-1-   v-if="$slots.super && breakpoints.md" -1-> -->
+      <!--   <!-1-   name="super" -1-> -->
+      <!--   <!-1- ></slot> -1-> -->
+
+      <!-- </div> -->
 
       <div class="
         tw-flex
         tw-flex-col
         tw-gap-[2rem]
+        tw-py-6
         tw-px-4
-        tw-pb-8
         lg:tw-px-8
       ">
+        <router-view name="topbar"></router-view>
         <router-view></router-view>
       </div>
     </div>

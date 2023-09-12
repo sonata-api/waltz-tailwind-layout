@@ -11,7 +11,7 @@
     "prepublishOnly": "npm run build"
   },
   "exports": {
-    ".": "./dist/waltz-tailwind-layout.js",
+    ".": "./src/index.ts",
     "./style.css": "./dist/style.css"
   },
   "files": [
