@@ -191,8 +191,10 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-px-8
         tw-gap-6
         tw-shadow
+        lg:tw-shadow-none
+        lg:tw-border-b
         w-surface
-        tw-h-[4rem]
+        tw-h-[4.6rem]
         view-top
       ">
         <w-icon
