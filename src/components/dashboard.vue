@@ -68,7 +68,6 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-flex-col
         tw-border-r
         tw-p-4
-        tw-bg-white
       ">
         <img
           v-clickable
@@ -188,13 +187,14 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-flex
         tw-items-center
         tw-z-20
-        tw-px-8
+        tw-px-4
         tw-gap-6
         tw-shadow
+        tw-h-[4.8rem]
+        lg:tw-px-8
         lg:tw-shadow-none
-        lg:tw-border-b
+        lg:tw-h-[5.8rem]
         w-surface
-        tw-h-[4.6rem]
         view-top
       ">
         <w-icon
@@ -219,6 +219,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         <w-icon
           v-else
           :icon="viewIcon"
+          class="tw-text-[13pt]"
         >
           {{ capitalize(viewTitle) }}
         </w-icon>
@@ -237,8 +238,8 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
             tw-rounded-full
             tw-overflow-hidden
             tw-border
-            tw-w-10
-            tw-h-10
+            tw-w-12
+            tw-h-12
           "
 
           @click="push('/dashboard/user/profile')"
@@ -301,6 +302,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-py-6
         tw-px-4
         lg:tw-px-8
+        tw-max-w-screen
       ">
         <router-view name="topbar"></router-view>
         <router-view></router-view>
@@ -311,9 +313,15 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 </template>
 
 <style scoped lang="scss">
-@media print {
-  .view-top {
+.view-top {
+  @media print {
     display: relative !important;
+  }
+
+  @media screen and (min-width: 600px) {
+    @include themed() {
+      background: t(body-background);
+    }
   }
 }
 
