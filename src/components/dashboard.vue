@@ -57,9 +57,9 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
       tw-z-40
       lg:tw-w-[20rem]
       ${
-        metaStore.menu.visible || breakpoints.md
+        metaStore.menu.visible
           ? 'tw-flex'
-          : 'tw-hidden'
+          : 'tw-hidden lg:tw-flex'
       }
     `">
       <div class="
@@ -244,55 +244,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           @click="push('/dashboard/user/profile')"
         ></w-picture>
 
-
-        <!-- <slot -->
-        <!--   v-if="$slots.super && breakpoints.md" -->
-        <!--   name="super" -->
-        <!-- ></slot> -->
-
-
       </div>
-
-      <!-- <div -->
-      <!--   v-if=" -->
-      <!--     breakpoints.md -->
-      <!--     || $slots.super -->
-      <!--     || hasTopbar -->
-      <!--   " -->
-
-      <!--   class=" -->
-      <!--     tw-inset-0 -->
-      <!--     tw-flex -->
-      <!--     tw-flex-col -->
-      <!--     tw-gap-[1rem] -->
-      <!--     tw-px-4 -->
-      <!--     tw-pt-6 -->
-      <!--     lg:tw-pt-0 -->
-      <!--     lg:tw-flex-row -->
-      <!--     lg:tw-items-center -->
-      <!--     lg:tw-gap-6 -->
-      <!--     lg:tw-px-8 -->
-      <!--     lg:tw-h-[5.4rem] -->
-      <!--     w-surface -->
-      <!--     view-top -->
-      <!--   " -->
-      <!-- > -->
-      <!--   <!-1- <w-icon -1-> -->
-      <!--   <!-1-   v-if="breakpoints.md" -1-> -->
-      <!--   <!-1-   :icon="viewIcon" -1-> -->
-      <!--   <!-1-   class="tw-text-lg" -1-> -->
-      <!--   <!-1- > -1-> -->
-      <!--   <!-1-   {{ capitalize(viewTitle) }} -1-> -->
-      <!--   <!-1- </w-icon> -1-> -->
-
-      <!--   <!-1- <router-view name="topbar"></router-view> -1-> -->
-
-      <!--   <!-1- <slot -1-> -->
-      <!--   <!-1-   v-if="$slots.super && breakpoints.md" -1-> -->
-      <!--   <!-1-   name="super" -1-> -->
-      <!--   <!-1- ></slot> -1-> -->
-
-      <!-- </div> -->
 
       <div class="
         tw-flex
