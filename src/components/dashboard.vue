@@ -20,7 +20,6 @@ const router = await useRouter()
 const metaStore = useStore('meta')
 const breakpoints = useBreakpoints()
 
-
 const push = (...args: Parameters<typeof router.push>) => {
   window.scrollTo(0, 0)
   router.push(...args)
@@ -58,9 +57,9 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
       tw-z-40
       lg:tw-w-[20rem]
       ${
-        metaStore.menu.visible
+        metaStore.menu.visible || breakpoints.md
           ? 'tw-flex'
-          : 'tw-hidden lg:tw-flex'
+          : 'tw-hidden'
       }
     `">
       <div class="
