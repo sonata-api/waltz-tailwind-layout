@@ -281,4 +281,12 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
     background: t(background-color-hover);
   }
 }
+
+.current {
+  @include themed() {
+    color: t(brand-color);
+    fill: t(brand-color);
+    background: t(background-color-lighter);
+  }
+}
 </style>
