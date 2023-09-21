@@ -62,11 +62,13 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           : 'tw-hidden lg:tw-flex'
       }
     `">
-      <div class="
-        tw-flex
-        tw-flex-col
-        tw-border-r
-        tw-p-4
+      <div
+        data-component="super-navbar"
+        class="
+          tw-flex
+          tw-flex-col
+          tw-border-r
+          tw-p-4
       ">
         <img
           v-clickable
@@ -102,7 +104,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
                 tw-rounded-xl
                 tw-justify-center
                 on-hover
-                ${index === expandedIndex && 'active'}
+                ${index === expandedIndex && 'current'}
               `"
 
               :icon="item.meta.icon"
