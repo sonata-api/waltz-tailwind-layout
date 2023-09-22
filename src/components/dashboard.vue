@@ -248,18 +248,23 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 
       </div>
 
-      <div class="
-        tw-flex
-        tw-flex-col
-        tw-gap-[2rem]
-        tw-py-6
-        tw-px-4
-        lg:tw-px-8
-        tw-max-w-screen
-      ">
-        <router-view name="topbar"></router-view>
-        <router-view></router-view>
-      </div>
+      <transition name="fade" mode="out-in">
+        <div
+          :key="$route.fullPath"
+          class="
+            tw-flex
+            tw-flex-col
+            tw-gap-[2rem]
+            tw-py-6
+            tw-px-4
+            lg:tw-px-8
+            tw-max-w-screen
+          "
+        >
+          <router-view name="topbar"></router-view>
+          <router-view></router-view>
+        </div>
+      </transition>
     </div>
   </div>
 
@@ -290,5 +295,15 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
     fill: t(brand-color);
     background: t(background-color-lighter);
   }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all .22s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
