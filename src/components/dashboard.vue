@@ -52,8 +52,6 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
       tw-w-screen
       tw-h-screen
       tw-overflow-hidden
-      tw-border-r
-      tw-bg-gray-50
       tw-z-40
       lg:tw-w-[20rem]
       ${
@@ -67,8 +65,8 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         class="
           tw-flex
           tw-flex-col
-          tw-border-r
           tw-p-4
+          tw-bg-gray-100
       ">
         <img
           v-clickable
@@ -100,7 +98,6 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
               v-clickable
               :class="`
                 tw-p-4
-                tw-border
                 tw-rounded-xl
                 tw-justify-center
                 on-hover
@@ -125,6 +122,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           tw-flex-col
           tw-flex-1
           tw-p-4
+          tw-bg-gray-50
         "
       >
         <div class="
@@ -220,7 +218,10 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         <w-icon
           v-else
           :icon="viewIcon"
-          class="tw-text-[13pt]"
+          class="
+            tw-text-lg
+            tw-font-[600]
+          "
         >
           {{ capitalize(viewTitle) }}
         </w-icon>
@@ -262,7 +263,9 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           "
         >
           <router-view name="topbar"></router-view>
-          <router-view></router-view>
+          <router-view v-slot="{ Component }">
+            <component :is="Component"></component>
+          </router-view>
         </div>
       </transition>
     </div>
@@ -293,7 +296,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
   @include themed() {
     color: t(brand-color);
     fill: t(brand-color);
-    background: t(background-color-lighter);
+    background: t(background-color-contrast);
   }
 }
 
