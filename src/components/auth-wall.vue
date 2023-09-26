@@ -10,6 +10,7 @@ provide('innerInputLabel', true)
 <template>
   <div class="
     tw-flex
+    tw-h-screen
   ">
     <div class="
       tw-flex
