@@ -1,7 +1,7 @@
 {
   "name": "waltz-tailwind-layout",
   "type": "module",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "",
   "main": "dist/waltz-tailwind-layout.js",
   "types": "dist/index.d.ts",
