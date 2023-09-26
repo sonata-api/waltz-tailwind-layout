@@ -255,11 +255,12 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           class="
             tw-flex
             tw-flex-col
-            tw-gap-[2rem]
+            tw-gap-[1.4rem]
             tw-py-6
             tw-px-4
-            lg:tw-px-8
-            tw-max-w-screen
+            lg:tw-px-6
+            xl:tw-px-8
+            tw-max-w-full
           "
         >
           <router-view name="topbar"></router-view>
