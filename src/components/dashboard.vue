@@ -18,6 +18,7 @@ const {
 
 const router = await useRouter()
 const metaStore = useStore('meta')
+const userStore = useStore('user')
 const breakpoints = useBreakpoints()
 
 const push = (...args: Parameters<typeof router.push>) => {
@@ -163,12 +164,24 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
               tw-rounded-xl
               tw-p-4
               on-hover
+              [&>[data-component=icon-label]]:tw-w-full
               ${isCurrent(subitem) && 'current'}
             `"
 
             @click="push({ name: subitem.name })"
           >
-            {{ capitalize(subitem.meta.title) }}
+            <div class="
+              tw-flex
+              tw-justify-between
+              tw-items-center
+            ">
+              <div>{{ capitalize(subitem.meta.title) }}</div>
+              <w-badge v-if="subitem.badge">
+                <w-async
+                  :promise="subitem.badge()"
+                ></w-async>
+              </w-badge>
+            </div>
           </w-icon>
         </div>
       </div>
@@ -233,19 +246,38 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           ></slot>
         </div>
 
-        <w-picture
-          v-clickable
-          :file-id="currentUser.picture?._id || currentUser.picture"
-          class="
-            tw-rounded-full
-            tw-overflow-hidden
-            tw-border
-            tw-w-12
-            tw-h-12
-          "
+        <w-context-menu>
+          <w-picture
+            v-clickable
+            :file-id="currentUser.picture?._id || currentUser.picture"
+            class="
+              tw-rounded-full
+              tw-overflow-hidden
+              tw-border
+              tw-w-12
+              tw-h-12
+            "
 
-          @click="push('/dashboard/user/profile')"
-        ></w-picture>
+          ></w-picture>
+
+          <template #profile>
+            <w-icon
+              icon="user-square"
+              @click="router.push('/dashboard/user/profile')"
+            >
+              Perfil
+            </w-icon>
+          </template>
+
+          <template #logout>
+            <w-icon
+              icon="signout"
+              @click="userStore.$actions.signout(); router.push('/user/signin')"
+            >
+              Sair
+            </w-icon>
+          </template>
+        </w-context-menu>
 
       </div>
 
@@ -264,9 +296,15 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           "
         >
           <router-view name="topbar"></router-view>
-          <router-view v-slot="{ Component }">
-            <component :is="Component"></component>
-          </router-view>
+          <div class="
+            tw-flex
+            tw-flex-col
+            tw-gap-[1.4rem]
+          ">
+            <router-view v-slot="{ Component }">
+              <component :is="Component"></component>
+            </router-view>
+          </div>
         </div>
       </transition>
     </div>
