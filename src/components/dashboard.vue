@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { type MenuSchema, useStore, useRouter, useNavbar, useBreakpoints } from 'waltz-ui'
 import { inject, ref, reactive, toRefs, computed, onMounted } from 'vue'
-import { WInfo, WIcon, WPicture } from '@waltz-ui/ui'
+import { WInfo, WIcon, WPicture, WBadge, WAsync } from '@waltz-ui/ui'
 
 const menuSchema = inject<MenuSchema>('menuSchema')
 
