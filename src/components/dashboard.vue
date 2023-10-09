@@ -286,9 +286,8 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-flex-col
         tw-gap-[1.4rem]
         tw-pt-6
-        tw-pb-6
+        tw-py-6
         tw-px-4
-        lg:tw-pt-0
         lg:tw-px-6
         xl:tw-px-8
         tw-max-w-full
