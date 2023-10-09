@@ -25,7 +25,7 @@ const push = (...args: Parameters<typeof router.push>) => {
   window.scrollTo(0, 0)
   router.push(...args)
 
-  if( !breakpoints.md ) {
+  if( !breakpoints.value.md ) {
     metaStore.menu.visible = false
   }
 }
@@ -210,7 +210,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         view-top
       ">
         <w-icon
-          v-if="!breakpoints.md"
+          v-if="!breakpoints.lg"
           v-clickable
           icon="bars"
           @click="metaStore.menu.visible = true"
@@ -281,32 +281,34 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 
       </div>
 
-      <transition name="fade" mode="out-in">
-        <div
-          :key="$route.fullPath"
-          class="
-            tw-flex
-            tw-flex-col
-            tw-gap-[1.4rem]
-            tw-py-6
-            tw-px-4
-            lg:tw-px-6
-            xl:tw-px-8
-            tw-max-w-full
-          "
-        >
-          <router-view name="topbar"></router-view>
-          <div class="
-            tw-flex
-            tw-flex-col
-            tw-gap-[1.4rem]
-          ">
-            <router-view v-slot="{ Component }">
-              <component :is="Component"></component>
-            </router-view>
+      <div class="
+        tw-flex
+        tw-flex-col
+        tw-gap-[1.4rem]
+        tw-pt-6
+        tw-pb-6
+        tw-px-4
+        lg:tw-pt-0
+        lg:tw-px-6
+        xl:tw-px-8
+        tw-max-w-full
+      ">
+        <router-view name="topbar"></router-view>
+        <transition name="fade" mode="out-in">
+          <div :key="$route.fullPath">
+            <div class="
+              tw-flex
+              tw-flex-col
+              tw-gap-[1.4rem]
+            ">
+              <router-view v-slot="{ Component }">
+                <component :is="Component"></component>
+              </router-view>
+            </div>
           </div>
-        </div>
-      </transition>
+        </transition>
+      </div>
+
     </div>
   </div>
 
