@@ -3,7 +3,6 @@ import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import typescript2 from 'rollup-plugin-typescript2'
 import dts from 'vite-plugin-dts'
-import { sassData } from 'waltz-build'
 
 export default defineConfig({
   plugins: [
@@ -40,12 +39,5 @@ export default defineConfig({
         /@waltz-ui\/web/
       ]
     },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: sassData({})
-      }
-    }
   },
 })

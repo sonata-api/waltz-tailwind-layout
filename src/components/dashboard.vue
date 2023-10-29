@@ -185,7 +185,6 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 
             :class="`
               tw-font-[300]
-              tw-text-[10pt]
               tw-rounded-xl
               tw-p-4
               on-hover
@@ -230,7 +229,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-h-[4.8rem]
         lg:tw-px-8
         lg:tw-shadow-none
-        lg:tw-h-[5.8rem]
+        lg:tw-h-[6rem]
         w-surface
         view-top
       ">
@@ -246,8 +245,8 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           v-clickable
           :src="logoUrl"
           class="
-            tw-h-16
-            tw-w-20
+            tw-h-12
+            tw-w-16
             tw-object-contain
           "
           @click="push('/dashboard')"
@@ -263,6 +262,11 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         >
           {{ capitalize(viewTitle) }}
         </w-icon>
+
+        <router-view
+          v-if="breakpoints.md"
+          name="topbar"
+        ></router-view>
 
         <div class="tw-ml-auto">
           <slot
@@ -311,26 +315,26 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
         tw-flex-col
         tw-gap-[1.4rem]
         tw-pt-6
-        tw-py-6
+        tw-pb-6
         tw-px-4
-        lg:tw-px-6
-        xl:tw-px-8
+        lg:tw-pt-0
+        lg:tw-px-8
         tw-max-w-full
       ">
-        <router-view name="topbar"></router-view>
-        <transition name="fade" mode="out-in">
-          <div :key="$route.fullPath">
-            <div class="
-              tw-flex
-              tw-flex-col
-              tw-gap-[1.4rem]
-            ">
-              <router-view v-slot="{ Component }">
-                <component :is="Component"></component>
-              </router-view>
-            </div>
-          </div>
-        </transition>
+        <router-view
+          v-if="!breakpoints.md"
+          name="topbar"
+        ></router-view>
+
+        <div class="
+          tw-flex
+          tw-flex-col
+          tw-gap-[1rem]
+        ">
+          <router-view v-slot="{ Component }">
+            <component :is="Component"></component>
+          </router-view>
+        </div>
       </div>
 
     </div>
@@ -345,33 +349,17 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
   }
 
   @media screen and (min-width: 600px) {
-    @include themed() {
-      background: t(body-background);
-    }
+    background: var(--theme-body-background);
   }
 }
 
 .on-hover:hover {
-  @include themed() {
-    background: t(background-color-hover);
-  }
+  background: var(--theme-background-color-hover);
 }
 
 .current {
-  @include themed() {
-    color: t(brand-color);
-    fill: t(brand-color);
-    background: t(background-color-contrast);
-  }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: all .22s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+  color: var(--theme-brand-color);
+  fill: var(--theme-brand-color);
+  background: var(--theme-background-color-contrast);
 }
 </style>
