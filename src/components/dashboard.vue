@@ -289,6 +289,37 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 
           ></w-picture>
 
+          <template #header>
+            <div class="
+              tw-flex
+              tw-flex-col
+              tw-items-start
+              tw-gap-1
+              tw-bg-gray-50
+              tw-p-4
+            ">
+              <div class="tw-text-[12pt]">
+                {{ currentUser.full_name }}
+              </div>
+
+              <div>
+                <div
+                  v-for="role in currentUser.roles"
+                  :key="`role-${role}`"
+                  class="
+                    tw-bg-blue-100
+                    tw-p-2
+                    tw-rounded-md
+                    tw-text-[8pt]
+                    tw-text-blue-800
+                  "
+                >
+                  {{ $t(role) }}
+                </div>
+              </div>
+            </div>
+          </template>
+
           <template #profile>
             <w-icon
               icon="user-square"
