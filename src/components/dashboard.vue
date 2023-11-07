@@ -199,7 +199,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
               tw-justify-between
               tw-items-center
             ">
-              <div>{{ capitalize(subitem.meta.title) }}</div>
+              <div>{{ capitalize($t(subitem.meta.title)) }}</div>
               <w-badge v-if="subitem.badge">
                 <w-async
                   :promise="subitem.badge()"
