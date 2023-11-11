@@ -2,7 +2,6 @@
 import {
   type MenuSchema,
   useStore,
-  useRouter,
   useNavbar,
   useBreakpoints
 
@@ -35,13 +34,15 @@ const navbarRefs = reactive({
   isCurrent: (..._args: Parameters<Awaited<ReturnType<typeof useNavbar>>['isCurrent']>) => false
 })
 
+const routerReady = ref(false)
+
 const {
   routesWithChildren,
   isCurrent
 
 } = toRefs(navbarRefs)
 
-const router = await useRouter()
+const router = ROUTER
 const metaStore = useStore('meta')
 const userStore = useStore('user')
 const breakpoints = useBreakpoints()
@@ -57,7 +58,10 @@ const push = (...args: Parameters<typeof router.push>) => {
 
 onMounted(async () => {
   const navbar = await useNavbar({ schema: menuSchema })
+  await router.isReady()
+
   Object.assign(navbarRefs, navbar)
+  routerReady.value = true
 })
 
 const expandedIndex = ref(0)
@@ -67,9 +71,11 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
 </script>
 
 <template>
-  <div class="
-    lg:tw-flex
-    w-body
+  <div
+    v-if="routerReady"
+    class="
+      lg:tw-flex
+      w-body
   ">
     <nav :class="`
       no-print
@@ -362,9 +368,7 @@ const logoUrl = new URL('/static/logo.png', import.meta.url).href
           tw-flex-col
           tw-gap-[1rem]
         ">
-          <router-view v-slot="{ Component }">
-            <component :is="Component"></component>
-          </router-view>
+          <router-view></router-view>
         </div>
       </div>
 
